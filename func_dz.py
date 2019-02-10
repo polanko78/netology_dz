@@ -29,68 +29,99 @@ def main(command):
 def man_search():
   print('Введите номер документа :')
   doc_number = str(input())
+  non_doc(doc_number)
   for doc in documents:
     if doc_number == str(doc.get('number')):
       print('Имя: {}'.format(doc.get('name')))
+
+
             
 def doc_list():
   for doc in documents:
     print(doc.get('type'), doc.get('number'), doc.get('name'), sep='   ')
 
 def shelf_search():
-  print('Введите номер документа :')
-  doc_number = str(input())
+  doc_number = str(input('Введите номер документа : ')))
+  non_doc(doc_number)
   for shelf in directories:
     if directories.get(shelf).count(doc_number) >= 1:
       print('Номер полки: ', shelf)
+    
 
 def new_doc():
   print('Введите новый документ в базу')
   name = str(input('Введите имя : '))
   type_doc = str(input('Введите тип : '))
-  number = str(input('Введите номер : '))
+  doc_number = str(input('Введите номер : '))
   shelf_input = str(input('Введите номер полки : '))
-  new_doc={"type": type_doc, "number": number, "name": name}
+  new_doc={"type": type_doc, "number": doc_number, "name": name}
   documents.append(new_doc)
   direct = {}
   if shelf_input in directories.keys():
     for shelf in directories:     
       if shelf == shelf_input:
-        directories.get(shelf).append(number)
+        directories.get(shelf).append(doc_number)
   else:
-    direct = {shelf_input:number}
+    print('Помещаем документ на новую полку.')
+    new_list = []
+    new_list.append(doc_number)
+    direct = {shelf_input:new_list}
     directories.update(direct)
-
+    
 
 def del_doc():
-  counter = 0
-  number = str(input('Введите номер документа : '))
+  doc_number = str(input('Введите номер документа : '))
+  non_doc(doc_number)
   for doc in documents:
-    counter += 1
-    if number == str(doc.get('number')):
+    if doc_number == str(doc.get('number')):
       documents.remove(doc)
   for shelf in directories:
-      if directories.get(shelf).count(number) >= 1:
-        directories.get(shelf).remove(number)
+    if directories.get(shelf).count(doc_number) >= 1:
+      directories.get(shelf).remove(doc_number)
    
 
 
 def move_doc():
-  number = str(input('Введите номер документа : '))
+  doc_number = str(input('Введите номер документа : '))
+  if non_doc(doc_number) == 0:
+    return
   shelf_input = input('Введите номер полки : ')
   for shelf in directories:
-    if directories.get(shelf).count(number) >= 1:
-      directories.get(shelf).remove(number)
-  for shelf in directories:
-    if shelf == shelf_input:
-      directories.get(shelf).append(number)
+    if directories.get(shelf).count(doc_number) >= 1:
+      directories.get(shelf).remove(doc_number)
+  if shelf_input in directories.keys():
+    for shelf in directories:     
+      if shelf == shelf_input:
+        directories.get(shelf).append(doc_number)
+  else:
+    print('Помещаем документ на новую полку.')
+    new_list = []
+    new_list.append(doc_number)
+    direct = {shelf_input:new_list}
+    directories.update(direct)
 
 
 def add_shelf():
   shelf_input = input('Введите номер полки : ')
+  if shelf_input in directories.keys():
+    print('Такая полка уже существует')
+    return
   blank = list()
   direct = {shelf_input:blank}
   directories.update(direct)
+
+def non_doc(doc_number):
+  counter = 0
+  check = 1
+  for doc in documents:
+    if doc_number != str(doc.get('number')):
+      counter += 1
+  if counter == len(documents):
+    print('Вы ввели несуществующий номер документа')
+    check = 0
+  return check
+  
+
 
 
 
@@ -100,8 +131,7 @@ def add_shelf():
 
         
 
-    
-
+check = 1   
 while True:
     print('Введите команду: ')
     command = input()
