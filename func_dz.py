@@ -53,13 +53,13 @@ def new_doc():
   new_doc={"type": type_doc, "number": number, "name": name}
   documents.append(new_doc)
   direct = {}
-  for shelf in directories:
-    if shelf_input in directories.keys():
+  if shelf_input in directories.keys():
+    for shelf in directories:     
       if shelf == shelf_input:
         directories.get(shelf).append(number)
-    else:
-      direct = {shelf_input:number}
-      directories.update(direct)
+  else:
+    direct = {shelf_input:number}
+    directories.update(direct)
 
 
 def del_doc():
