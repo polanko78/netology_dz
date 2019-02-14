@@ -41,7 +41,7 @@ def doc_list():
     print(doc.get('type'), doc.get('number'), doc.get('name'), sep='   ')
 
 def shelf_search():
-  doc_number = str(input('Введите номер документа : ')))
+  doc_number = str(input('Введите номер документа : '))
   non_doc(doc_number)
   for shelf in directories:
     if directories.get(shelf).count(doc_number) >= 1:
@@ -122,19 +122,11 @@ def non_doc(doc_number):
   return check
   
 
-
-
-
-                 
-    
-
-
-        
-
-check = 1   
-while True:
+def enter():
+  while True:
     print('Введите команду: ')
     command = input()
     main(command)
 
 
+enter()
