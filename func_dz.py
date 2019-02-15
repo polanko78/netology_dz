@@ -28,12 +28,14 @@ def main(command):
     man_list()
  
 def man_list():
+  fake_doc={"type":"ПаСпОрТ", "number":"567 56"}
+  documents.append(fake_doc)
+  print(documents)
   for doc in documents:
-    doc.pop('name')
     try:
       print(doc.get('name'))
     except KeyError:
-      print('Произошла ошибка. Один или несколько документов неверно оформленны.')
+      print('Произошла ошибка в документе {}.'.format(doc.get('number')))
       enter()
 
 
