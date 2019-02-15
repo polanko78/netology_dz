@@ -24,7 +24,18 @@ def main(command):
     move_doc()
   elif command == 'as':
     add_shelf()
+  elif command == 'ml':
+    man_list()
  
+def man_list():
+  for doc in documents:
+    doc.pop('name')
+    try:
+      print(doc.get('name'))
+    except KeyError:
+      print('Произошла ошибка. Один или несколько документов неверно оформленны.')
+      enter()
+
 
 def man_search():
   print('Введите номер документа :')
