@@ -1,4 +1,4 @@
-class animal:
+class Animal:
     hunger = 0
     name = ''
     sound =''
@@ -13,7 +13,7 @@ class animal:
         self.product = product
         self.sound  = sound
         self.weight = weight
-        animal.farm.append(self)
+        Animal.farm.append(self)
     
     def eat(self):
         if self.hunger <= 0:
@@ -26,14 +26,14 @@ class animal:
 
         sound = input('Какой звук мы слышим?')
         if sound in sound_tup:
-            for an in animal.farm:
+            for an in Animal.farm:
                 if sound == an.sound:
                     print('Это кричит {}'.format(an.name))
         else:
             print('Непонятный звук')
         
 
-class bird(animal):
+class Bird(Animal):
     product = 0      
 
     def get_product(self):
@@ -43,7 +43,7 @@ class bird(animal):
        
         
 
-class milky(animal):
+class Milky(Animal):
 
     def get_product(self):
         self.product += 10
@@ -52,7 +52,7 @@ class milky(animal):
     
             
 
-class wooly(animal):
+class Wooly(Animal):
 
     def get_product(self):
         self.product += 5
@@ -63,16 +63,16 @@ class wooly(animal):
 def collect_product():
     prod_type = input('Какой продукт хотите собрать? ')
     if prod_type == 'яйца':
-        for an in animal.farm:
-            if type(an) == bird:
+        for an in Animal.farm:
+            if type(an) == Bird:
                 an.get_product()
     elif prod_type == 'молоко':
-        for an in animal.farm:
-            if type(an) == milky:
+        for an in Animal.farm:
+            if type(an) == Milky:
                 an.get_product()
     elif prod_type == 'шерсть':
-        for an in animal.farm:
-            if type(an) == wooly:
+        for an in Animal.farm:
+            if type(an) == Wooly:
                 an.get_product()
     else:
         print('Такого на нашей ферме нет.')
@@ -81,7 +81,7 @@ def weight_status():
     all_weight = 0
     weight_check = 0
     ws = ''
-    for an in animal.farm:
+    for an in Animal.farm:
         all_weight += an.weight
         if an.weight > weight_check:
             weight_check = an.weight
@@ -94,24 +94,24 @@ def weight_status():
         
     
 
-bird1 = bird('Серый', 5, 0, 10, 'Го-Го')
-bird2 = bird('Белый', 0, 0, 11, 'Го-Го')
-cow1 = milky('Манька', 0, 0, 150, 'Муу')
-sheep1 = wooly('Барашек', 10, 0, 60, 'Бее')
-sheep2 = wooly('Кудрявый', 0, 0, 45, 'Бее')
-bird3 = bird('Ко-Ко', 0, 0, 10, 'Ко-Ко')
-bird4 = bird('Кукареку', 10, 0, 10, 'Ко-Ко')
-bird5 = bird('Кряква', 5, 0, 10, 'Кря-Кря')
-goat1 = milky('Рога', 0, 0, 50, 'Мее')
-goat2 = milky('Копыта', 0, 0, 45, 'Мее')
+bird1 = Bird('Серый', 5, 0, 10, 'Го-Го')
+bird2 = Bird('Белый', 0, 0, 11, 'Го-Го')
+cow1 = Milky('Манька', 0, 0, 150, 'Муу')
+sheep1 = Wooly('Барашек', 10, 0, 60, 'Бее')
+sheep2 = Wooly('Кудрявый', 0, 0, 45, 'Бее')
+bird3 = Bird('Ко-Ко', 0, 0, 10, 'Ко-Ко')
+bird4 = Bird('Кукареку', 10, 0, 10, 'Ко-Ко')
+bird5 = Bird('Кряква', 5, 0, 10, 'Кря-Кря')
+goat1 = Milky('Рога', 0, 0, 50, 'Мее')
+goat2 = Milky('Копыта', 0, 0, 45, 'Мее')
 
 
 
 
-for an in animal.farm:
+for an in Animal.farm:
     an.eat()
 collect_product()
-animal.call()
+Animal.call()
 weight_status()
 
 
