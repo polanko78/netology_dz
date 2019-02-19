@@ -15,8 +15,12 @@ def check(dishes):
 
 
 def get_shop_list_by_dishes(dishes, person):
+    show_list = {}
     print('Список покупок: ')
     for i in dishes:
+       for x in cook_book[i]:
+           show_list[x] = {'quantity':list_line[1], 'measure':list_line[2]}
+
 
 
 
