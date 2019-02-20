@@ -4,7 +4,7 @@ def main():
     dish = input('Введите названия блюд (разделитель пробел) : ')
     dishes = dish.split(' ')
     check(dishes)
-    person = input('Введите количество персон: ')
+    person = int(input('Введите количество персон: '))
     get_shop_list_by_dishes(dishes, person)
 
 def check(dishes):
@@ -18,8 +18,17 @@ def get_shop_list_by_dishes(dishes, person):
     show_list = {}
     print('Список покупок: ')
     for i in dishes:
-       for x in cook_book[i]:
-           show_list[x] = {'quantity':list_line[1], 'measure':list_line[2]}
+        for x in cook_book[i]:
+#            print(x)
+            ingridient = x['ingridient_name']
+            if ingridient not in show_list.keys():
+                show_list[ingridient] = {'quantity': int(x['quantity']) * person, 'measure': x['measure']}
+            else:
+                quantity = show_list[ingridient]['quantity'] + int(x['quantity']) * person
+                show_list[ingridient] = {'quantity':quantity, 'measure':x['measure']}
+    print(show_list)
+
+
 
 
 
