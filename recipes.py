@@ -1,17 +1,22 @@
 def main():
     dish = ''
     print('Блюда в нашей книге : ', cook_book.keys())
-    dish = input('Введите названия блюд (разделитель пробел) : ')
-    dishes = dish.split(' ')
-    check(dishes)
+    dish = input('Введите названия блюд (разделитель запятая) : ')
+    dishes = dish.split(', ')
     person = int(input('Введите количество персон: '))
+    check(dishes, person)
     get_shop_list_by_dishes(dishes, person)
 
-def check(dishes):
+#Вопрос
+#Имеет смысл подобный блок выносить в функцию? Мне показалось, что да, но повышает ли это реально удобность читать код?
+def check(dishes, person):
     for i in dishes:
         if i not in cook_book.keys():
             print('Нет таких блюд у нас')
             main()
+    if person <= 0:
+        print('Неверное количество персон')
+        main()
 
 
 def get_shop_list_by_dishes(dishes, person):
@@ -19,7 +24,6 @@ def get_shop_list_by_dishes(dishes, person):
     print('Список покупок: ')
     for i in dishes:
         for x in cook_book[i]:
-#            print(x)
             ingridient = x['ingridient_name']
             if ingridient not in show_list.keys():
                 show_list[ingridient] = {'quantity': int(x['quantity']) * person, 'measure': x['measure']}
@@ -27,10 +31,6 @@ def get_shop_list_by_dishes(dishes, person):
                 quantity = show_list[ingridient]['quantity'] + int(x['quantity']) * person
                 show_list[ingridient] = {'quantity':quantity, 'measure':x['measure']}
     print(show_list)
-
-
-
-
 
 
 
@@ -54,5 +54,4 @@ with open('recipes.txt') as f:
         ingr_line = []
         f.readline()
 
-print(cook_book)
 main()
