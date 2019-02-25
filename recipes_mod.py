@@ -1,12 +1,17 @@
 def main(cook_book):
-    dish = ''
-    dishes = []
-    print('Блюда в нашей книге : ', cook_book.keys())
-    dish = input('Введите названия блюд (разделитель запятая) : ')
-    dishes = dish.split(', ')
-    person = int(input('Введите количество персон: '))
-    check(cook_book, dishes, person)
-    get_shop_list_by_dishes(cook_book, dishes, person)
+    while True:
+        dish = ''
+        dishes = []
+        person = None
+        print('Блюда в нашей книге : ', cook_book.keys())
+        dish = input('Введите названия блюд (разделитель запятая)(q - выход) : ')
+        if dish == 'q':
+            return
+        dishes = dish.split(', ')
+        person = int(input('Введите количество персон: '))
+        if check(cook_book, dishes, person):
+            get_shop_list_by_dishes(cook_book, dishes, person)
+
 
 #Вопрос
 #Имеет смысл подобный блок выносить в функцию? Мне показалось, что да, но повышает ли это реально удобность читать код?
@@ -14,10 +19,11 @@ def check(cook_book, dishes, person):
     for i in dishes:
         if i not in cook_book.keys():
             print('Нет таких блюд у нас')
-            main(cook_book)
+            return False
     if person <= 0:
         print('Неверное количество персон')
-        main(cook_book)
+        return False
+    return True
 
 
 def get_shop_list_by_dishes(cook_book, dishes, person):
