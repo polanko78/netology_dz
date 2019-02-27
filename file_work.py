@@ -18,7 +18,7 @@ with open('newsafr.json') as newsafr:
     count_string.sort(reverse = True)
     for x in new_string:
         if x not in top_string:
-            if new_string.count(x) in count_string[0:10]:
+            if new_string.count(x) in count_string[:10]:
                 top_string.append(x)
     print('TOP 10 слов в файле новостей: ')
     pprint(top_string)
