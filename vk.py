@@ -9,27 +9,30 @@ class VK_USER:
         self.token = token
         self.user_id = user_id
 
-    def get_param(self):
-        return {
+    def __and__(self, other):
+        params = {
             'access_token': token,
             'v': 5.92,
-            'user_id': self.user_id
+            #            'user_id': self.user_id
+            'source_uid': self.user_id,
+            'target_uid': other.user_id
         }
-
-    def get_friends(self):
-        params = self.get_param()
-        response = requests.get('https://api.vk.com/method/friends.get', params)
+        response = requests.get('https://api.vk.com/method/friends.getMutual', params)
         return response.json()
 
 
+def print(user):
+    pprint('https://vk.com/id{}'.format(user.user_id))
+    return
 
-token = 'd26bab6163aedeb679b5a6fcce59108807d58b823382b945edd6fa06b9931d7de207a56c980c052a8d457'
+if __name__ == '__main__':
 
+    token = 'd26bab6163aedeb679b5a6fcce59108807d58b823382b945edd6fa06b9931d7de207a56c980c052a8d457'
 
-user1 = VK_USER(token, 139344497)
-user2 = VK_USER(token, 165822593)
-spisok1 = user1.get_friends()
-spisok2 = user2.get_friends()
-s1 = set(spisok1['response']['items'])
-s2 = set(spisok2['response']['items'])
-print(s1 & s2)
+    user1 = VK_USER(token, 139344497)
+    user2 = VK_USER(token, 165822593)
+    t = user1&user2
+    pprint(t['response'])
+    print(user1)
+    print(user2)
+
