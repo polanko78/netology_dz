@@ -15,6 +15,7 @@ class VK_USER:
             'extended': 1,
             'fields': 'members_count'
          }
+
     def get_groups(self):
         response_gr = requests.get('https://api.vk.com/method/groups.get', self.params)
         res_er = response_gr.json()
@@ -89,7 +90,6 @@ def data_to_file(r_gr, user_group):
                     data = {'name': z['name'], 'gid': z['id'], 'members_count': z['members_count']}
                     big_data.append(data)
         json.dump(big_data, file, ensure_ascii=False, indent=1)
-
 
 
 if __name__ == '__main__':
