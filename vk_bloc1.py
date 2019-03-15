@@ -32,9 +32,9 @@ def enter_user_and_key():
     with open('token.json') as file:
         json_data = json.load(file)
         token = json_data['token']
-    c = True
+    x = True
     user_id = ''
-    while c == True:
+    while x == True:
         user_data = input('Введите имя или id пользователя :')
         params = {
             'user_ids': user_data,
