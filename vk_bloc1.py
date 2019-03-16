@@ -16,16 +16,16 @@ class VK_USER:
             'fields': 'members_count'
          }
 
-    def get_groups(self):
-        response_gr = requests.get('https://api.vk.com/method/groups.get', self.params)
-        res_er = response_gr.json()
-        try:
-            if res_er['error']['error_code'] == 6:
-                time.sleep(3)
-                response_gr = requests.get('https://api.vk.com/method/groups.get', self.params)
-        except KeyError:
-            pass
-        return response_gr.json()
+def get_groups(user_x):
+    response_gr = requests.get('https://api.vk.com/method/groups.get', user_x.params)
+    res_er = response_gr.json()
+    try:
+        if res_er['error']['error_code'] == 6:
+            time.sleep(3)
+            response_gr = requests.get('https://api.vk.com/method/groups.get', user_x.params)
+    except KeyError:
+        pass
+    return response_gr.json()
 
 
 def enter_user_and_key():
@@ -69,7 +69,7 @@ def get_user_data(user):
 def main_work(friend_list, user_group):
     for x in friend_list:
         user_x = VK_USER(token, x)
-        res = user_x.get_groups()
+        res = get_groups(user_x)
         tmp_group_list = []
         try:
             for y in res['response']['items']:
