@@ -35,7 +35,7 @@ def enter_user_and_key():
             response = requests.get('https://api.vk.com/method/users.get', params)
 #            raise requests.exceptions.ReadTimeout
         except requests.exceptions.ReadTimeout:
-            i=3
+            i = 3
             while i > 0:
                 time.sleep(3)
                 try:
@@ -73,6 +73,7 @@ def get_user_data(user):
 
 
 def main_work(f_friend_list, f_user_group):
+    z = len(f_friend_list)
     for x in f_friend_list:
         user_x = VK_USER(token, x)
         res = get_groups(user_x)
@@ -82,9 +83,12 @@ def main_work(f_friend_list, f_user_group):
                 tmp_group_list.append(y['id'])
             tmp_group = set(tmp_group_list)
             f_user_group.difference_update(tmp_group)
-            print('.', end='', flush=True)
+#            print('.', end='', flush=True)
         except KeyError:
             pass
+        z -= 1
+        if z != 0:
+            print('Еще обработать {} друзей'.format(z))
     return f_user_group
 
 
