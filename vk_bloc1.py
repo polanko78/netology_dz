@@ -47,8 +47,6 @@ def enter_user_and_key():
                         sys.exit('ReadTimeout Error!')
                 else:
                     i = 0
-
-            print('Piuuu!')
         res = response.json()
         try:
             for i in res['response']:
