@@ -1,20 +1,9 @@
+from class_for_vk import VK_USER
 import requests
 import json
 import time
-from pprint import pprint
+import sys
 
-class VK_USER:
-
-    def __init__(self, token, user_id):
-        self.token = token
-        self.user_id = user_id
-        self.params = {
-            'access_token': token,
-            'v': 5.92,
-            'user_id': self.user_id,
-            'extended': 1,
-            'fields': 'members_count'
-         }
 
 def get_groups(user_x):
     response_gr = requests.get('https://api.vk.com/method/groups.get', user_x.params)
@@ -31,43 +20,62 @@ def get_groups(user_x):
 def enter_user_and_key():
     with open('token.json') as file:
         json_data = json.load(file)
-        token = json_data['token']
+        f_token = json_data['token']
     x = True
-    user_id = ''
+    f_user_id = ''
+    response = {}
     while x == True:
         user_data = input('Введите имя или id пользователя :')
         params = {
             'user_ids': user_data,
-            'access_token': token,
+            'access_token': f_token,
             'v': 5.92
         }
-        response = requests.get('https://api.vk.com/method/users.get', params)
+        try:
+            response = requests.get('https://api.vk.com/method/users.get', params)
+#            raise requests.exceptions.ReadTimeout
+        except requests.exceptions.ReadTimeout:
+            i=3
+            while i > 0:
+                time.sleep(3)
+                try:
+                    response = requests.get('https://api.vk.com/method/users.get', params)
+#                    raise requests.exceptions.ReadTimeout
+                except requests.exceptions.ReadTimeout:
+                    i -= 1
+                    if i == 0:
+                        sys.exit('ReadTimeout Error!')
+                else:
+                    i = 0
+
+            print('Piuuu!')
         res = response.json()
         try:
             for i in res['response']:
-                user_id = i['id']
+                f_user_id = i['id']
                 x = False
         except KeyError:
             print('{}'.format(res['error']['error_msg']))
-    return user_id, token
+    return f_user_id, f_token
+
 
 def get_user_data(user):
-    group_list = []
-    friend_list = []
+    f_group_list = []
+    f_friend_list = []
     response_fr = requests.get('https://api.vk.com/method/friends.get', user.params)
     response_gr = requests.get('https://api.vk.com/method/groups.get', user.params)
     r_fr = response_fr.json()
-    r_gr = response_gr.json()
-    for x in r_gr['response']['items']:
-        group_list.append(x['id'])
-    user_group = set(group_list)
-    pprint(user_group)
+    f_r_gr = response_gr.json()
+    for x in f_r_gr['response']['items']:
+        f_group_list.append(x['id'])
+    f_user_group = set(f_group_list)
     for x in r_fr['response']['items']:
-        friend_list.append(x['id'])
-    return r_gr, user_group, friend_list
+        f_friend_list.append(x['id'])
+    return f_r_gr, f_user_group, f_friend_list
 
-def main_work(friend_list, user_group):
-    for x in friend_list:
+
+def main_work(f_friend_list, f_user_group):
+    for x in f_friend_list:
         user_x = VK_USER(token, x)
         res = get_groups(user_x)
         tmp_group_list = []
@@ -75,11 +83,12 @@ def main_work(friend_list, user_group):
             for y in res['response']['items']:
                 tmp_group_list.append(y['id'])
             tmp_group = set(tmp_group_list)
-            user_group.difference_update(tmp_group)
-            print('.', end='', flush = True)
+            f_user_group.difference_update(tmp_group)
+            print('.', end='', flush=True)
         except KeyError:
-                pass
-    return user_group
+            pass
+    return f_user_group
+
 
 def data_to_file(r_gr, user_group):
     big_data = []
@@ -98,4 +107,3 @@ if __name__ == '__main__':
     r_gr, user_group, friend_list = get_user_data(user)
     user_group = main_work(friend_list, user_group)
     data_to_file(r_gr, user_group)
-
