@@ -44,12 +44,14 @@ def enter_user_and_key():
         json_data = json.load(file)
         f_token = json_data['token']
     x = True
-    t = 0
+    t = -1
     f_user_id = ''
     while x == True:
         user_data = input('Введите имя или id пользователя :')
-        t = input('Введите число N. В список групп будут добавленны те,'
-                  ' в которых есть общие друзья, но не более, чем N человек :')
+        while t <= 0:
+            t = input('Введите число N. В список групп будут добавленны те,'
+                    ' в которых есть общие друзья, но не более, чем N человек :')
+            t = int(t)
         params = {
             'user_ids': user_data,
             'access_token': f_token,
