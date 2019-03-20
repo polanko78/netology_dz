@@ -48,10 +48,14 @@ def enter_user_and_key():
     f_user_id = ''
     while x == True:
         user_data = input('Введите имя или id пользователя :')
-        while t <= 0:
+        while t < 0:
             t = input('Введите число N. В список групп будут добавленны те,'
                     ' в которых есть общие друзья, но не более, чем N человек :')
-            t = int(t)
+            try:
+                t = int(t)
+            except ValueError:
+                print('Вы ввели не число. Попробуйте еще раз.')
+                t = -1
         params = {
             'user_ids': user_data,
             'access_token': f_token,
