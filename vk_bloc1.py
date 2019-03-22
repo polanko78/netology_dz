@@ -3,6 +3,7 @@ import requests
 import json
 import time
 import sys
+import progressbar
 
 
 def decorator_for_readtimeout(function):
@@ -12,7 +13,6 @@ def decorator_for_readtimeout(function):
         except requests.exceptions.ReadTimeout:
             i = 3
             while i > 0:
-                time.sleep(3)
                 try:
                     function
                 except requests.exceptions.ReadTimeout:
@@ -46,11 +46,11 @@ def enter_user_and_key():
     x = True
     t = -1
     f_user_id = ''
-    while x == True:
+    while x:
         user_data = input('Введите имя или id пользователя :')
         while t < 0:
             t = input('Введите число N. В список групп будут добавленны те,'
-                    ' в которых есть общие друзья, но не более, чем N человек :')
+                      ' в которых есть общие друзья, но не более, чем N человек :')
             try:
                 t = int(t)
             except ValueError:
@@ -89,10 +89,10 @@ def get_user_data(user):
 
 
 def main_work(f_friend_list, f_user_group):
-    z = len(f_friend_list)
     new_user_group = f_user_group
     check_list = []
     new_user_group = set(new_user_group)
+    bar = progressbar.ProgressBar(max_value=progressbar.UnknownLength)
     for x in f_friend_list:
         user_x = VK_USER(token, x)
         res = get_groups(user_x)
@@ -104,12 +104,9 @@ def main_work(f_friend_list, f_user_group):
             f_user_group.difference_update(tmp_group)
             check = new_user_group.intersection(tmp_group)
             check_list.append(list(check))
-#            print('.', end='', flush=True)
         except KeyError:
             pass
-        z -= 1
-        if z != 0:
-            print('Еще обработать {} друзей'.format(z))
+        bar.update(x)
     return f_user_group, check_list
 
 
