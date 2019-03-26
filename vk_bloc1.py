@@ -31,7 +31,7 @@ def get_groups(user_x):
     res_er = response_gr.json()
     try:
         if res_er['error']['error_code'] == 6:
-            time.sleep(3)
+            time.sleep(0.33)
             response_gr = requests.get('https://api.vk.com/method/groups.get', user_x.params)
     except KeyError:
         pass
@@ -89,11 +89,14 @@ def get_user_data(user):
 
 
 def main_work(f_friend_list, f_user_group):
+    l = len(f_friend_list)
+    t = 0
     new_user_group = f_user_group
     check_list = []
     new_user_group = set(new_user_group)
-    bar = progressbar.ProgressBar(max_value=progressbar.UnknownLength)
+    bar = progressbar.ProgressBar(max_value=l)
     for x in f_friend_list:
+        t += 1
         user_x = VK_USER(token, x)
         res = get_groups(user_x)
         tmp_group_list = []
@@ -106,7 +109,7 @@ def main_work(f_friend_list, f_user_group):
             check_list.append(list(check))
         except KeyError:
             pass
-        bar.update(x)
+        bar.update(t)
     return f_user_group, check_list
 
 
